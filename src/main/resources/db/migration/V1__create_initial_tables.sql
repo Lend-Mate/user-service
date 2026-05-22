@@ -1,0 +1,20 @@
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    last_login_at TIMESTAMP,
+    profile_image TEXT,
+    phone VARCHAR(30),
+    email VARCHAR(255) NOT NULL,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+    is_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    CONSTRAINT ux_users_email UNIQUE (email),
+    CONSTRAINT ux_users_username UNIQUE (username),
+    CONSTRAINT ux_users_phone UNIQUE (phone),
+    CONSTRAINT chk_users_role CHECK (role IN ('ADMIN', 'LENDER', 'CUSTOMER'))
+);
