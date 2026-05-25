@@ -1,6 +1,6 @@
-package com.project.user_service.user.service;
+package com.project.user_service.service;
 
-import com.project.user_service.user.entity.User;
+import com.project.user_service.entity.User;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +10,7 @@ public interface UserService {
 
     User getUserById(Long id);
 
-    User createUser(User user);
+    String createUser(User user);
 
     User updateUser(Long id, User user);
 

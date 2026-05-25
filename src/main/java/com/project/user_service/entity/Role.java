@@ -1,4 +1,4 @@
-package com.project.user_service.user.entity;
+package com.project.user_service.entity;
 
 import java.util.EnumSet;
 import java.util.Set;

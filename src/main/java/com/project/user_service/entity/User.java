@@ -1,4 +1,4 @@
-package com.project.user_service.user.entity;
+package com.project.user_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
@@ -8,13 +8,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -38,9 +35,9 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 50)
-    private Role role;
+    private String role;
 
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
