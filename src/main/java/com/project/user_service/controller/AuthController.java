@@ -5,7 +5,6 @@ import com.project.user_service.dto.AuthRequest;
 import com.project.user_service.entity.User;
 import com.project.user_service.service.JwtService;
 import com.project.user_service.service.UserService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +22,11 @@ public class AuthController {
     private JwtService jwtService;
 
     private AuthenticationManager authenticationManager;
+
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "user service is up...";
+    }
 
     @PostMapping("/register")
     public String addNewUser(@RequestBody User user) {

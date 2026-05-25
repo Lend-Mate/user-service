@@ -37,7 +37,7 @@ public class SecurityConfig {
                 // Configure endpoint authorization
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-                        .requestMatchers("/auth/register", "/auth/login", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/auth/health", "/auth/register", "/auth/login", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                         // Role-based endpoints
                         .requestMatchers(HttpMethod.GET, "/user/profile")
