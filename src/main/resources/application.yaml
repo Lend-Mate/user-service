@@ -1,3 +1,11 @@
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+server:
+  forward-headers-strategy: framework
+
 spring:
   application:
     name: user-service
