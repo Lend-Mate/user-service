@@ -1,18 +1,21 @@
 package com.project.user_service.entity;
 
 public enum Permission {
+    // Kullanıcı kendi verilerine erişir
+    PROFILE_READ,
+    PROFILE_WRITE,
+    PROFILE_DELETE,
+
+    // Admin tüm kullanıcıları yönetir
     USER_READ,
     USER_WRITE,
     USER_DELETE,
 
-    PRODUCT_READ,
-    PRODUCT_WRITE,
-    PRODUCT_DELETE,
-
+    // Kiralama
     RENTAL_READ,
     RENTAL_WRITE,
     RENTAL_DELETE,
 
-    ADMIN_PANEL,
-    LENDER
+    // Admin paneli
+    ADMIN_PANEL
 }
