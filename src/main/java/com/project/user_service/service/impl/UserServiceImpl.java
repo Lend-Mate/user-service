@@ -2,6 +2,7 @@ package com.project.user_service.service.impl;
 
 import com.project.user_service.entity.Role;
 import com.project.user_service.entity.User;
+import com.project.user_service.event.UserDeletedEvent;
 import com.project.user_service.repository.UserRepository;
 import com.project.user_service.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +26,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
+    private final KafkaTemplate<String, UserDeletedEvent> kafkaTemplate;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder, KafkaTemplate<String, UserDeletedEvent> kafka) {
         this.userRepository = userRepository;
         this.encoder = encoder;
+        this.kafkaTemplate = kafka;
     }
 
     @Override
@@ -71,6 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void deleteUser(Long id) {
         User existing = getUserById(id);
         existing.setDeleted(true);
+        kafkaTemplate.send("user.deleted", new UserDeletedEvent(id));
         userRepository.save(existing);
     }
 
