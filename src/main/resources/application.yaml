@@ -22,4 +22,4 @@ spring:
 
 gateway:
   security:
-    enabled: true
+    enabled: false
