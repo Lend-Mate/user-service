@@ -1,5 +1,6 @@
 package com.project.user_service.controller;
 
+import com.project.user_service.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
 public class UserController {
+    private UserService userService;
 
     @GetMapping("/profile")
     public ResponseEntity<String> getProfile() {
@@ -25,7 +27,6 @@ public class UserController {
 
     @DeleteMapping("/profile")
     public ResponseEntity<String> deleteOwnAccount() {
-        // Kendi hesabını siler
         return ResponseEntity.ok("Hesap silindi");
     }
 
@@ -51,6 +52,7 @@ public class UserController {
 
     @DeleteMapping("/admin/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.ok("Kullanıcı silindi: " + id);
     }
 
