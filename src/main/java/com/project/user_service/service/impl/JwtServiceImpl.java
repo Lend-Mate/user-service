@@ -11,6 +11,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,13 +25,20 @@ public class JwtServiceImpl implements JwtService {
 
     public static final String SECRET = "5367566859703373367639792F423F452848284D6251655468576D5A71347437";
 
-    @Override
-    public String generateToken(String email) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, email);
+    private final UserRepository userRepository;
+
+    public JwtServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    private String createToken(Map<String, Object> claims, String email) {
+    @Override
+    public String generateToken(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole());
+        claims.put("userId", user.getId().toString());
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
