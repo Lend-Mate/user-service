@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -52,7 +53,8 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(gatewayAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(gatewayAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(gatewayAuthFilter, AuthorizationFilter.class);
 
         return http.build();
     }
