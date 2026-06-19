@@ -62,4 +62,10 @@ public class UserController {
         // ROLE_USER → ROLE_ADMIN gibi
         return ResponseEntity.ok("Rol güncellendi: " + id);
     }
+
+    @GetMapping("/internal/{id}/email")
+    public ResponseEntity<String> getUserEmail(@PathVariable Long id) {
+        String email = userService.getEmailById(id);
+        return ResponseEntity.ok(email);
+    }
 }

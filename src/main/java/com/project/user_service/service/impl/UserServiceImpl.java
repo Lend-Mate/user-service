@@ -113,4 +113,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .toList();
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
+
+    @Override
+    public String getEmailById(Long id) {
+        return userRepository.findById(id)
+                .map(User::getEmail)
+                .orElseThrow(() -> new RuntimeException("User not found: " + id));
+    }
 }

@@ -21,4 +21,5 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     Optional<User> findByPhone(String phone);
+    String getEmailById(Long id);
 }

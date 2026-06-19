@@ -5,6 +5,7 @@ springdoc:
     path: /swagger-ui.html
 server:
   forward-headers-strategy: framework
+  port: 8081
 
 spring:
   application:
