@@ -1,19 +1,18 @@
 package com.project.user_service.service.impl;
 
+import com.project.user_service.dto.responseDto.UserResponse;
 import com.project.user_service.entity.Role;
 import com.project.user_service.entity.User;
 import com.project.user_service.event.UserDeletedEvent;
+import com.project.user_service.mapper.UserMapper;
 import com.project.user_service.repository.UserRepository;
 import com.project.user_service.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,12 +23,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder encoder;
 
     private final KafkaTemplate<String, UserDeletedEvent> kafkaTemplate;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder, KafkaTemplate<String, UserDeletedEvent> kafka) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder encoder, KafkaTemplate<String, UserDeletedEvent> kafka) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
         this.encoder = encoder;
         this.kafkaTemplate = kafka;
     }
@@ -40,9 +41,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -56,7 +58,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User updateUser(Long id, User user) {
-        User existing = getUserById(id);
+        User existing = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
         existing.setFirstName(user.getFirstName());
         existing.setLastName(user.getLastName());
         existing.setUsername(user.getUsername());
@@ -74,7 +77,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUser(Long id) {
-        User existing = getUserById(id);
+        User existing = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
         existing.setDeleted(true);
         kafkaTemplate.send("user.deleted", new UserDeletedEvent(id));
         userRepository.save(existing);

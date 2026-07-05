@@ -1,5 +1,6 @@
 package com.project.user_service.controller;
 
+import com.project.user_service.dto.responseDto.UserResponse;
 import com.project.user_service.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -46,8 +47,10 @@ public class UserController {
     }
 
     @GetMapping("/admin/users/{id}")
-    public ResponseEntity<String> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok("Kullanıcı detayı: " + id);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id) != null
+                ? ResponseEntity.ok(userService.getUserById(id))
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/admin/users/{id}")
@@ -61,6 +64,12 @@ public class UserController {
                                                  @RequestBody Object roleRequest) {
         // ROLE_USER → ROLE_ADMIN gibi
         return ResponseEntity.ok("Rol güncellendi: " + id);
+    }
+
+    @GetMapping("/internal/{id}")
+    public ResponseEntity<UserResponse> getUserDetail(@PathVariable Long id) {
+        UserResponse user = userService.getUserById(id);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/internal/{id}/email")

@@ -1,7 +1,7 @@
 package com.project.user_service.controller;
 
 
-import com.project.user_service.dto.AuthRequest;
+import com.project.user_service.dto.requestDto.AuthRequest;
 import com.project.user_service.entity.User;
 import com.project.user_service.service.JwtService;
 import com.project.user_service.service.UserService;
