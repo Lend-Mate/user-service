@@ -21,3 +21,20 @@ logging:
       project:
         user-service: DEBUG
 
+otel:
+  exporter:
+    otlp:
+      endpoint: http://localhost:4318
+  resource:
+    attributes:
+      service.name: ${spring.application.name}
+  logs:
+    exporter: none
+  traces:
+    exporter: otlp
+  metrics:
+    exporter: none
+  java:
+    disabled:
+      resource:
+        providers: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
