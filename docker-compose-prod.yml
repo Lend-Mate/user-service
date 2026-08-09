@@ -12,13 +12,13 @@ services:
       SPRING_DATASOURCE_USERNAME: lendmate
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_PROFILES_ACTIVE: prod
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_SERVICE_NAME: user-service
       JAVA_OPTS: >-
         -XX:MaxRAMPercentage=60.0 
         -XX:+UseSerialGC 
         -Xss256k 
         -XX:MaxMetaspaceSize=100m
-      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
-      OTEL_SERVICE_NAME: product-service
     mem_limit: 300m
     restart: unless-stopped
     networks:
