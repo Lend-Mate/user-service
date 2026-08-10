@@ -10,24 +10,3 @@ spring:
 
       properties:
         spring.json.add.type.headers: false
-
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*" # actuator / metrics / health endpointlerini dışarı açar
-  metrics:
-    tags:
-      # Grafana dashboard'larının uygulamayı ayırt etmesi için service.name şarttır
-      application: ${spring.application.name:product-service}
-  tracing:
-    sampling:
-      probability: 1.0
-
-server:
-  shutdown: immediate
-
-logging:
-  level:
-    com.project: INFO
