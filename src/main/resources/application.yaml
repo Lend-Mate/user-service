@@ -1,21 +1,23 @@
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-server:
-  forward-headers-strategy: framework
-  port: 8081
-
 spring:
   application:
     name: user-service
   profiles:
-    active: dev
-  jpa:
-    hibernate:
-      ddl-auto: validate
+    active: ${ACTIVE_PROFILE:dev}
 
-gateway:
-  security:
-    enabled: false
+server:
+  port: 8081
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: stage
+    import: "configserver:${CONFIG_SERVER_URL}"
+
