@@ -3,7 +3,6 @@ package com.lendmate.userservice.service.impl;
 import com.lendmate.userservice.dto.responseDto.UserResponse;
 import com.lendmate.userservice.entity.Role;
 import com.lendmate.userservice.entity.User;
-import com.lendmate.userservice.event.UserDeletedEvent;
 import com.lendmate.userservice.mapper.UserMapper;
 import com.lendmate.userservice.repository.UserRepository;
 import com.lendmate.userservice.service.UserService;
@@ -12,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,13 +24,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserMapper userMapper;
     private final PasswordEncoder encoder;
 
-    private final KafkaTemplate<String, UserDeletedEvent> kafkaTemplate;
-
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder encoder, KafkaTemplate<String, UserDeletedEvent> kafka) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.encoder = encoder;
-        this.kafkaTemplate = kafka;
     }
 
     @Override
@@ -80,7 +75,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User existing = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
         existing.setDeleted(true);
-        kafkaTemplate.send("user.deleted", new UserDeletedEvent(id));
         userRepository.save(existing);
     }
 
