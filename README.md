@@ -1,6 +1,6 @@
 # User Service
 
-> LendMate kullanıcı kayıt, giriş, JWT üretimi ve kullanıcı yönetimi işlemlerini sağlayan Spring Boot servisi.
+LendMate kullanıcı kayıt, giriş, JWT üretimi ve kullanıcı yönetimi işlemlerini sağlayan Spring Boot servisi.
 
 ---
 
