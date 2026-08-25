@@ -98,26 +98,6 @@ src/main/java/com/lendmate/userservice/
 | `created_at`, `updated_at` | Kayıt zamanları |
 
 Migration geçmişindeki son role constraint `ADMIN` ve `USER` değerlerini kabul eder. `V1` dosyasındaki `LENDER` ve `CUSTOMER` değerleri `V2` ile değiştirilmiştir.
-### Şema Diyagramı
-
-```mermaid
-erDiagram
-	USERS {
-		BIGSERIAL id PK
-		VARCHAR first_name
-		VARCHAR last_name
-		VARCHAR username UK
-		VARCHAR email UK
-		VARCHAR password
-		VARCHAR role
-		VARCHAR phone UK
-		BOOLEAN is_deleted
-		BOOLEAN is_verified
-		TIMESTAMP last_login_at
-		TIMESTAMP created_at
-		TIMESTAMP updated_at
-	}
-```
 
 ---
 
